@@ -1,7 +1,10 @@
 
 # Environment variables
 .env
-.env.*
+backend/.env
+# Keep frontend env files (no secrets inside)
+!frontend/.env.production
+!frontend/.env.development
 !.env.example
 
 # Python
@@ -21,8 +24,7 @@ dist/
 # Logs
 *.log
 
-# Database backups
-*.sql
+# Database files
 *.sql.gz
 *.db
 *.sqlite
