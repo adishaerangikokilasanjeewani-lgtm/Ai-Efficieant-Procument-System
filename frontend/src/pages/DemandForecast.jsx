@@ -172,7 +172,7 @@ export default function DemandForecast() {
                     </td>
                     <td className="font-semibold text-slate-100">{f.product_name}</td>
                     <td>
-                      <span className="text-slate-400 text-xs">{f.category || 'General'}</span>
+                      <span className="category-pill">{f.category || 'General'}</span>
                     </td>
                     <td className="text-right font-medium text-slate-300">
                       {f.current_stock}

@@ -100,6 +100,10 @@
   .badge-cancelled {
     @apply inline-flex items-center gap-1.5 bg-slate-700/60 text-slate-400 border border-slate-600/50 px-2.5 py-1 rounded-full text-xs font-semibold;
   }
+  .category-pill {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium
+           bg-slate-700/60 text-slate-300 border border-slate-600/40 transition-colors;
+  }
 
   /* Typography */
   .page-title {
@@ -325,6 +329,13 @@ body.light .badge-cancelled {
   background-color: #f1f5f9;
   color: #64748b;
   border-color: #cbd5e1;
+}
+
+body.light .category-pill,
+body.light span.bg-slate-700\/60 {
+  background-color: #f1f5f9 !important;
+  color: #334155 !important;
+  border: 1px solid #e2e8f0 !important;
 }
 
 body.light ::-webkit-scrollbar-thumb {

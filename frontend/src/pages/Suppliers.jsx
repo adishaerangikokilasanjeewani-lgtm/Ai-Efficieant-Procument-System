@@ -193,7 +193,7 @@ export default function Suppliers() {
                     </div>
                   </td>
                   <td>
-                    <span className="bg-slate-700/60 text-slate-300 px-2.5 py-1 rounded-md text-xs font-medium">
+                    <span className="category-pill">
                       {s.category || 'General'}
                     </span>
                   </td>

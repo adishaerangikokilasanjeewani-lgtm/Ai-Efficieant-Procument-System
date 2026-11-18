@@ -144,7 +144,7 @@ export default function SupplierRisk() {
                       >
                         <td className="font-semibold text-slate-100">{r.supplier_name}</td>
                         <td>
-                          <span className="text-slate-400 text-xs">{r.category || 'General'}</span>
+                          <span className="category-pill">{r.category || 'General'}</span>
                         </td>
                         <td><ScoreBar value={r.delivery_score} /></td>
                         <td><ScoreBar value={r.quality_score} /></td>
@@ -196,7 +196,7 @@ export default function SupplierRisk() {
                         </td>
                         <td className="font-semibold text-slate-100">{r.supplier_name}</td>
                         <td>
-                          <span className="text-slate-400 text-xs">{r.category || 'General'}</span>
+                          <span className="category-pill">{r.category || 'General'}</span>
                         </td>
                         <td className="text-slate-300 text-xs font-medium">{r.lead_time_days} days</td>
                         <td>

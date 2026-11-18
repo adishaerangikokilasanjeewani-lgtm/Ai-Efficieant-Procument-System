@@ -209,7 +209,7 @@ export default function Products() {
                   </td>
                   <td className="font-semibold text-slate-100">{p.name}</td>
                   <td>
-                    <span className="text-slate-400 text-xs font-medium">{p.category || 'General'}</span>
+                    <span className="category-pill">{p.category || 'General'}</span>
                   </td>
                   <td className="text-right font-medium text-slate-100">
                     {(p.unit_price).toLocaleString()}
