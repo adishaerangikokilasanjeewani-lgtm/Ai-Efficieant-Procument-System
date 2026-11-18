@@ -129,7 +129,7 @@ export default function DemandForecast() {
           </div>
 
           {/* Table with Filter Tabs */}
-          <div className="flex gap-2 p-1 bg-slate-800/80 rounded-xl border border-slate-700/80 max-w-fit">
+          <div className="tab-group flex gap-2 p-1 bg-slate-800/80 rounded-xl border border-slate-700/80 max-w-fit">
             {[
               { id: 'all', label: `All Items (${forecasts.length})` },
               { id: 'reorder', label: `Reorder Needed (${reorderCount})` },

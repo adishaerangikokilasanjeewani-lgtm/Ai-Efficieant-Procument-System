@@ -134,7 +134,7 @@ export default function Orders() {
 
       {/* Filter Tabs & Search */}
       <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
-        <div className="flex items-center gap-1.5 p-1 bg-slate-800/80 rounded-xl border border-slate-700/80 overflow-x-auto">
+        <div className="tab-group flex items-center gap-1.5 p-1 bg-slate-800/80 rounded-xl border border-slate-700/80 overflow-x-auto">
           {[
             { id: '', label: 'All Orders', count: statusCounts.all },
             { id: 'pending', label: 'Pending', count: statusCounts.pending },

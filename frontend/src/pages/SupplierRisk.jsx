@@ -92,7 +92,7 @@ export default function SupplierRisk() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 p-1 bg-slate-800/80 rounded-xl border border-slate-700/80 max-w-fit">
+      <div className="tab-group flex gap-2 p-1 bg-slate-800/80 rounded-xl border border-slate-700/80 max-w-fit">
         <button
           onClick={() => setTab('risk')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
