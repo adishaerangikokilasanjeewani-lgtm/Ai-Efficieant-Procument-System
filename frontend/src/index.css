@@ -272,12 +272,22 @@ body.light aside nav a:not(.bg-sky-600):hover {
   background-color: #f1f5f9;
   color: #0f172a;
 }
-body.light aside .bg-slate-800 {
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
+body.light aside .bg-slate-800,
+body.light aside .bg-slate-800\/70,
+body.light aside .light-profile-card {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
 }
-body.light aside .border-slate-700 {
-  border-color: #e2e8f0;
+body.light aside .light-profile-name {
+  color: #0f172a !important;
+}
+body.light aside .light-profile-role {
+  color: #64748b !important;
+}
+body.light aside .border-slate-700,
+body.light aside .border-slate-700\/80,
+body.light aside .border-slate-700\/50 {
+  border-color: #e2e8f0 !important;
 }
 
 /* Badges in Light Mode */

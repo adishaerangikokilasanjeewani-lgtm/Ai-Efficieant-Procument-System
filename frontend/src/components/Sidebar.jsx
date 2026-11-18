@@ -91,13 +91,13 @@ export default function Sidebar({ collapsed, setCollapsed }) {
       {/* Bottom Profile & Logout */}
       <div className="p-3 border-t border-slate-700/80 space-y-2">
         {!collapsed && (
-          <div className="flex items-center gap-3 px-3 py-2.5 bg-slate-800/70 rounded-xl border border-slate-700/50">
+          <div className="light-profile-card flex items-center gap-3 px-3 py-2.5 bg-slate-800/70 rounded-xl border border-slate-700/50 transition-colors">
             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center flex-shrink-0 shadow-sm">
               {initials}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-white text-xs font-semibold truncate">{user?.full_name}</p>
-              <p className="text-slate-400 text-[11px] capitalize truncate">{user?.role?.replace(/_/g, ' ')}</p>
+              <p className="light-profile-name text-white text-xs font-semibold truncate">{user?.full_name}</p>
+              <p className="light-profile-role text-slate-400 text-[11px] capitalize truncate">{user?.role?.replace(/_/g, ' ')}</p>
             </div>
           </div>
         )}
