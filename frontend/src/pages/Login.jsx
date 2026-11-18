@@ -31,9 +31,9 @@ export default function Login() {
       <div className="w-full max-w-md relative">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-sky-600 rounded-2xl shadow-xl mb-4">
-            <span className="text-white text-2xl font-bold">EP</span>
+            <span className="text-white text-2xl font-bold">SCM</span>
           </div>
-          <h1 className="text-3xl font-bold text-white">Efficient Procurement</h1>
+          <h1 className="text-3xl font-bold text-white">Supply Chain Management</h1>
           <p className="text-slate-400 mt-1">AI-Powered Supply Chain Management</p>
         </div>
         <div className="card">

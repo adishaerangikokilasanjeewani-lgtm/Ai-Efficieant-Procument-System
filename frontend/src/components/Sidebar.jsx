@@ -25,12 +25,12 @@ export default function Sidebar({ collapsed, setCollapsed }) {
       <div className="flex items-center justify-between p-4 border-b border-slate-700">
         {!collapsed && (
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-sky-600 rounded-lg flex items-center justify-center">
-              <span className="text-white text-xs font-bold">EP</span>
+            <div className="w-8 h-8 bg-sky-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <span className="text-white text-xs font-bold">SCM</span>
             </div>
-            <div>
-              <p className="text-white font-semibold text-sm">Efficient</p>
-              <p className="text-sky-400 text-xs">Procurement</p>
+            <div className="leading-tight">
+              <p className="text-white font-semibold text-sm">Supply Chain</p>
+              <p className="text-sky-400 text-xs">Management</p>
             </div>
           </div>
         )}
