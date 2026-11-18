@@ -5,11 +5,27 @@ import LoadingSpinner from '../components/LoadingSpinner'
 import { BarChart3, RefreshCw, TrendingUp, DollarSign } from 'lucide-react'
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
 
-const COLORS = ['#0ea5e9', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4', '#84cc16']
+const COLORS = [
+  '#38bdf8', // sky
+  '#818cf8', // indigo
+  '#34d399', // emerald
+  '#fbbf24', // amber
+  '#f87171', // red
+  '#c084fc', // purple
+  '#2dd4bf', // teal
+  '#fb923c', // orange
+  '#a3e635', // lime
+  '#f472b6', // pink
+  '#60a5fa', // blue
+  '#e879f9', // fuchsia
+  '#4ade80', // green
+  '#94a3b8', // slate
+]
 
 export default function SpendAnalysis() {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [activeIndex, setActiveIndex] = useState(null)
 
   const load = () => {
     setLoading(true)
@@ -22,6 +38,31 @@ export default function SpendAnalysis() {
   const categoryData = data?.category_breakdown
     ? Object.entries(data.category_breakdown).map(([name, value]) => ({ name, value: Math.round(value) })).sort((a, b) => b.value - a.value)
     : []
+
+  const activeCategory = activeIndex !== null && categoryData[activeIndex] ? categoryData[activeIndex] : null
+
+  const renderCustomLabel = ({ cx, cy, midAngle, outerRadius, percent, name }) => {
+    // Only display label on chart for categories with >= 6% share to prevent overlapping clutter
+    if (percent < 0.06) return null
+    const RADIAN = Math.PI / 180
+    const radius = outerRadius + 22
+    const x = cx + radius * Math.cos(-midAngle * RADIAN)
+    const y = cy + radius * Math.sin(-midAngle * RADIAN)
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="#cbd5e1"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+        fontSize={11}
+        fontWeight={500}
+      >
+        {`${name} ${(percent * 100).toFixed(0)}%`}
+      </text>
+    )
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -91,17 +132,76 @@ export default function SpendAnalysis() {
 
             {/* Category pie */}
             <div className="card">
-              <h3 className="text-white font-semibold mb-1">Spend by Category</h3>
-              <p className="text-slate-400 text-xs mb-4">Distribution of purchasing budget</p>
+              <div className="flex items-start justify-between mb-2">
+                <div>
+                  <h3 className="text-white font-semibold mb-0.5">Spend by Category</h3>
+                  <p className="text-slate-400 text-xs">Distribution of purchasing budget</p>
+                </div>
+                <span className="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700">
+                  {categoryData.length} Categories
+                </span>
+              </div>
+
               {categoryData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={280}>
-                  <PieChart>
-                    <Pie data={categoryData} cx="50%" cy="45%" outerRadius={100} dataKey="value" nameKey="name" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`} labelLine={{ stroke: '#475569', strokeWidth: 1 }}>
-                      {categoryData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-                    </Pie>
-                    <Tooltip contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '0.5rem' }} formatter={v => [fmtLKR(v), 'Spend']} />
-                  </PieChart>
-                </ResponsiveContainer>
+                <div className="relative">
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={categoryData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={58}
+                        outerRadius={88}
+                        paddingAngle={2}
+                        dataKey="value"
+                        nameKey="name"
+                        label={renderCustomLabel}
+                        labelLine={{ stroke: '#64748b', strokeWidth: 1 }}
+                        onMouseEnter={(_, index) => setActiveIndex(index)}
+                        onMouseLeave={() => setActiveIndex(null)}
+                      >
+                        {categoryData.map((_, i) => (
+                          <Cell
+                            key={i}
+                            fill={COLORS[i % COLORS.length]}
+                            opacity={activeIndex === null || activeIndex === i ? 1 : 0.45}
+                            style={{ outline: 'none', transition: 'opacity 0.2s', cursor: 'pointer' }}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{
+                          background: '#0f172a',
+                          border: '1px solid #334155',
+                          borderRadius: '0.5rem',
+                          color: '#f8fafc',
+                          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.4)'
+                        }}
+                        formatter={(v, name) => {
+                          const total = data?.total_spend || 1
+                          const pct = ((v / total) * 100).toFixed(1)
+                          return [`${fmtLKR(v)} (${pct}%)`, name]
+                        }}
+                      />
+                      {/* Donut center KPI info */}
+                      <text x="50%" y="45%" textAnchor="middle" dominantBaseline="middle" fill="#94a3b8" fontSize={11} fontWeight={500}>
+                        {activeCategory ? activeCategory.name : 'Total Spend'}
+                      </text>
+                      <text x="50%" y="54%" textAnchor="middle" dominantBaseline="middle" fill="#f8fafc" fontSize={14} fontWeight={700}>
+                        {activeCategory ? fmtLKR(activeCategory.value) : fmtLKR(data?.total_spend || 0)}
+                      </text>
+                      {activeCategory ? (
+                        <text x="50%" y="62%" textAnchor="middle" dominantBaseline="middle" fill="#38bdf8" fontSize={11} fontWeight={600}>
+                          {`${((activeCategory.value / (data?.total_spend || 1)) * 100).toFixed(1)}%`}
+                        </text>
+                      ) : (
+                        <text x="50%" y="62%" textAnchor="middle" dominantBaseline="middle" fill="#64748b" fontSize={10}>
+                          Hover for details
+                        </text>
+                      )}
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
               ) : <p className="text-slate-500 text-center py-16">No category data available</p>}
             </div>
           </div>
