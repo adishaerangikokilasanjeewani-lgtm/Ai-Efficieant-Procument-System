@@ -1,21 +1,43 @@
-export default function StatCard({ title, value, icon: Icon, color = 'sky', subtitle }) {
-  const colors = {
-    sky: { bg: 'bg-sky-900/40', icon: 'text-sky-400', border: 'border-sky-800/30' },
-    emerald: { bg: 'bg-emerald-900/40', icon: 'text-emerald-400', border: 'border-emerald-800/30' },
-    amber: { bg: 'bg-amber-900/40', icon: 'text-amber-400', border: 'border-amber-800/30' },
-    red: { bg: 'bg-red-900/40', icon: 'text-red-400', border: 'border-red-800/30' },
-    violet: { bg: 'bg-violet-900/40', icon: 'text-violet-400', border: 'border-violet-800/30' },
+export default function StatCard({ title, value, icon: Icon, color = 'sky', subtitle, trend }) {
+  const colorMap = {
+    sky: {
+      icon: 'text-sky-500 dark:text-sky-400',
+      bg: 'bg-sky-500/10 border-sky-500/20 text-sky-600',
+      glow: 'group-hover:border-sky-500/40'
+    },
+    violet: {
+      icon: 'text-violet-500 dark:text-violet-400',
+      bg: 'bg-violet-500/10 border-violet-500/20 text-violet-600',
+      glow: 'group-hover:border-violet-500/40'
+    },
+    emerald: {
+      icon: 'text-emerald-500 dark:text-emerald-400',
+      bg: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600',
+      glow: 'group-hover:border-emerald-500/40'
+    },
+    amber: {
+      icon: 'text-amber-500 dark:text-amber-400',
+      bg: 'bg-amber-500/10 border-amber-500/20 text-amber-600',
+      glow: 'group-hover:border-amber-500/40'
+    },
+    red: {
+      icon: 'text-rose-500 dark:text-rose-400',
+      bg: 'bg-rose-500/10 border-rose-500/20 text-rose-600',
+      glow: 'group-hover:border-rose-500/40'
+    },
   }
-  const c = colors[color] || colors.sky
+
+  const c = colorMap[color] || colorMap.sky
+
   return (
-    <div className="card flex items-center gap-4 hover:border-slate-600 transition-colors">
-      <div className={`stat-icon ${c.bg} border ${c.border}`}>
+    <div className={`card group flex items-center gap-4 hover:-translate-y-0.5 transition-all duration-200 cursor-default ${c.glow}`}>
+      <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border ${c.bg} transition-transform duration-200 group-hover:scale-105`}>
         <Icon size={22} className={c.icon} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-slate-400 text-xs font-medium uppercase tracking-wide">{title}</p>
-        <p className="text-2xl font-bold text-white mt-0.5">{value}</p>
-        {subtitle && <p className="text-slate-500 text-xs mt-0.5">{subtitle}</p>}
+        <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">{title}</p>
+        <p className="text-2xl font-bold text-white tracking-tight mt-0.5">{value}</p>
+        {subtitle && <p className="text-slate-500 text-xs mt-0.5 font-medium">{subtitle}</p>}
       </div>
     </div>
   )
