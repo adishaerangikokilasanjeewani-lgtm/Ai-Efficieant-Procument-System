@@ -1,5 +1,6 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import ThemeToggle from './ThemeToggle'
 import {
   LayoutDashboard, Package, Truck, ShoppingCart, Brain,
   BarChart3, Menu, X, Shield
@@ -34,9 +35,12 @@ export default function Sidebar({ collapsed, setCollapsed }) {
             </div>
           </div>
         )}
-        <button onClick={() => setCollapsed(!collapsed)} className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-700">
-          {collapsed ? <Menu size={18} /> : <X size={18} />}
-        </button>
+        <div className="flex items-center gap-1.5">
+          {!collapsed && <ThemeToggle />}
+          <button onClick={() => setCollapsed(!collapsed)} className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-700">
+            {collapsed ? <Menu size={18} /> : <X size={18} />}
+          </button>
+        </div>
       </div>
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
         {navItems.map(({ to, icon: Icon, label }) => (
@@ -56,6 +60,11 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           <div className="mb-2 px-3 py-2 bg-slate-800 rounded-lg">
             <p className="text-white text-xs font-medium">{user?.full_name}</p>
             <p className="text-slate-400 text-xs capitalize">{user?.role?.replace(/_/g, ' ')}</p>
+          </div>
+        )}
+        {collapsed && (
+          <div className="flex justify-center mb-2">
+            <ThemeToggle />
           </div>
         )}
         <button onClick={logout} className="flex items-center gap-3 px-3 py-2.5 rounded-lg w-full text-slate-400 hover:bg-red-900/30 hover:text-red-400 text-sm">
