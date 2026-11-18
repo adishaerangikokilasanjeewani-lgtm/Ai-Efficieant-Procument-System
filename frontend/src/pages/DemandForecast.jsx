@@ -4,8 +4,12 @@ import PageHeader from '../components/PageHeader'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { Brain, RefreshCw, TrendingUp, Package, AlertTriangle, CheckCircle, Sparkles } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
+import { useTheme } from '../context/ThemeContext'
 
 export default function DemandForecast() {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
@@ -106,17 +110,19 @@ export default function DemandForecast() {
 
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={topChart} layout="vertical" margin={{ left: 140, right: 30, top: 5, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={false} opacity={0.5} />
-                <XAxis type="number" tick={{ fill: '#64748b', fontSize: 11 }} tickLine={false} />
-                <YAxis type="category" dataKey="product_name" tick={{ fill: '#cbd5e1', fontSize: 11 }} tickLine={false} width={135} />
+                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#334155' : '#e2e8f0'} horizontal={false} opacity={0.5} />
+                <XAxis type="number" tick={{ fill: isDark ? '#64748b' : '#64748b', fontSize: 11 }} tickLine={false} />
+                <YAxis type="category" dataKey="product_name" tick={{ fill: isDark ? '#cbd5e1' : '#334155', fontSize: 11 }} tickLine={false} width={135} />
                 <Tooltip
                   contentStyle={{
-                    background: '#0f172a',
-                    border: '1px solid #334155',
+                    background: isDark ? '#0f172a' : '#ffffff',
+                    border: isDark ? '1px solid #334155' : '1px solid #e2e8f0',
                     borderRadius: '0.75rem',
-                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.4)'
+                    boxShadow: isDark ? '0 10px 15px -3px rgba(0, 0, 0, 0.4)' : '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                    color: isDark ? '#f8fafc' : '#0f172a'
                   }}
-                  labelStyle={{ color: '#f8fafc', fontWeight: 600, fontSize: '12px' }}
+                  labelStyle={{ color: isDark ? '#f8fafc' : '#0f172a', fontWeight: 600, fontSize: '12px' }}
+                  itemStyle={{ color: isDark ? '#38bdf8' : '#0284c7', fontWeight: 600 }}
                   formatter={(v) => [`${v.toFixed(0)} units`, 'Predicted Demand']}
                 />
                 <Bar dataKey="predicted_demand" radius={[0, 6, 6, 0]}>

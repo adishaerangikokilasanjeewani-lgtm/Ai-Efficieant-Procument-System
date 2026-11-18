@@ -7,6 +7,7 @@ import PageHeader from '../components/PageHeader'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { ShoppingCart, Truck, Package, AlertTriangle, TrendingUp, Clock, CheckCircle, Brain, Star, ArrowRight, ShieldAlert } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import { useTheme } from '../context/ThemeContext'
 
 const statusCls = {
   pending: 'badge-pending',
@@ -18,6 +19,8 @@ const statusCls = {
 
 export default function Dashboard() {
   const { user } = useAuth()
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   const [summary, setSummary] = useState(null)
   const [monthly, setMonthly] = useState([])
   const [lowStock, setLowStock] = useState([])
@@ -77,22 +80,23 @@ export default function Dashboard() {
             <AreaChart data={monthly}>
               <defs>
                 <linearGradient id="spendGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.35} />
+                  <stop offset="5%" stopColor="#0ea5e9" stopOpacity={isDark ? 0.35 : 0.2} />
                   <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.5} />
-              <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 11 }} tickLine={false} />
-              <YAxis tick={{ fill: '#64748b', fontSize: 11 }} tickLine={false} tickFormatter={(v) => fmtK(v)} />
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#334155' : '#e2e8f0'} opacity={0.5} />
+              <XAxis dataKey="month" tick={{ fill: isDark ? '#64748b' : '#64748b', fontSize: 11 }} tickLine={false} />
+              <YAxis tick={{ fill: isDark ? '#64748b' : '#64748b', fontSize: 11 }} tickLine={false} tickFormatter={(v) => fmtK(v)} />
               <Tooltip
                 contentStyle={{
-                  background: '#0f172a',
-                  border: '1px solid #334155',
+                  background: isDark ? '#0f172a' : '#ffffff',
+                  border: isDark ? '1px solid #334155' : '1px solid #e2e8f0',
                   borderRadius: '0.75rem',
-                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.4)'
+                  boxShadow: isDark ? '0 10px 15px -3px rgba(0, 0, 0, 0.4)' : '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                  color: isDark ? '#f8fafc' : '#0f172a'
                 }}
-                labelStyle={{ color: '#94a3b8', fontSize: '11px', marginBottom: '4px' }}
-                itemStyle={{ color: '#38bdf8', fontWeight: 600 }}
+                labelStyle={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: '11px', marginBottom: '4px' }}
+                itemStyle={{ color: isDark ? '#38bdf8' : '#0284c7', fontWeight: 600 }}
                 formatter={(v) => [`LKR ${fmtK(v)}`, 'Spend']}
               />
               <Area type="monotone" dataKey="spend" stroke="#0ea5e9" strokeWidth={2.5} fill="url(#spendGrad)" />

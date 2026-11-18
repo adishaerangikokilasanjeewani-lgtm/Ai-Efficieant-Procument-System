@@ -5,6 +5,7 @@ import LoadingSpinner from '../components/LoadingSpinner'
 import StatCard from '../components/StatCard'
 import { BarChart3, RefreshCw, TrendingUp, DollarSign } from 'lucide-react'
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import { useTheme } from '../context/ThemeContext'
 
 const COLORS = [
   '#38bdf8', // sky
@@ -24,6 +25,20 @@ const COLORS = [
 ]
 
 export default function SpendAnalysis() {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+  const chartGrid = isDark ? '#334155' : '#e2e8f0'
+  const chartAxisColor = isDark ? '#64748b' : '#94a3b8'
+  const chartYAxisLabel = isDark ? '#cbd5e1' : '#1e293b'
+  const tooltipBg = isDark ? '#0f172a' : '#ffffff'
+  const tooltipBorder = isDark ? '#334155' : '#e2e8f0'
+  const tooltipLabel = isDark ? '#94a3b8' : '#64748b'
+  const tooltipText = isDark ? '#38bdf8' : '#0284c7'
+  const pieLabel = isDark ? '#cbd5e1' : '#1e293b'
+  const pieCenterLabel = isDark ? '#94a3b8' : '#64748b'
+  const pieCenterValue = isDark ? '#f8fafc' : '#0f172a'
+  const gradientOpacity = isDark ? 0.35 : 0.2
+
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activeIndex, setActiveIndex] = useState(null)
@@ -53,7 +68,7 @@ export default function SpendAnalysis() {
       <text
         x={x}
         y={y}
-        fill="#cbd5e1"
+        fill={pieLabel}
         textAnchor={x > cx ? 'start' : 'end'}
         dominantBaseline="central"
         fontSize={11}
@@ -106,34 +121,34 @@ export default function SpendAnalysis() {
           <div className="card">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-white font-bold text-base tracking-tight">Monthly Spend Trend</h3>
-                <p className="text-slate-400 text-xs">Total purchasing expenditure by month</p>
+                <h3 className="chart-title font-bold text-base tracking-tight">Monthly Spend Trend</h3>
+                <p className="chart-subtitle text-xs">Total purchasing expenditure by month</p>
               </div>
             </div>
             <ResponsiveContainer width="100%" height={260}>
               <AreaChart data={data?.monthly_trend || []}>
                 <defs>
                   <linearGradient id="spendGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.35} />
+                    <stop offset="5%" stopColor="#0ea5e9" stopOpacity={gradientOpacity} />
                     <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.5} />
-                <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 11 }} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke={chartGrid} opacity={0.5} />
+                <XAxis dataKey="month" tick={{ fill: chartAxisColor, fontSize: 11 }} tickLine={false} />
                 <YAxis
-                  tick={{ fill: '#64748b', fontSize: 11 }}
+                  tick={{ fill: chartAxisColor, fontSize: 11 }}
                   tickLine={false}
                   tickFormatter={v => v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : `${(v / 1000).toFixed(0)}K`}
                 />
                 <Tooltip
                   contentStyle={{
-                    background: '#0f172a',
-                    border: '1px solid #334155',
+                    background: tooltipBg,
+                    border: `1px solid ${tooltipBorder}`,
                     borderRadius: '0.75rem',
-                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.4)'
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.15)'
                   }}
-                  labelStyle={{ color: '#94a3b8', fontSize: '11px', marginBottom: '4px' }}
-                  itemStyle={{ color: '#38bdf8', fontWeight: 600 }}
+                  labelStyle={{ color: tooltipLabel, fontSize: '11px', marginBottom: '4px' }}
+                  itemStyle={{ color: tooltipText, fontWeight: 600 }}
                   formatter={v => [fmtLKR(v), 'Spend']}
                 />
                 <Area type="monotone" dataKey="total_amount" stroke="#0ea5e9" strokeWidth={2.5} fill="url(#spendGrad)" />
@@ -146,33 +161,33 @@ export default function SpendAnalysis() {
             {/* Top Suppliers Bar Chart */}
             <div className="card flex flex-col justify-between">
               <div>
-                <h3 className="text-white font-bold text-base tracking-tight mb-0.5">Top 10 Suppliers by Spend</h3>
-                <p className="text-slate-400 text-xs mb-4">Highest value procurement partners</p>
+                <h3 className="chart-title font-bold text-base tracking-tight mb-0.5">Top 10 Suppliers by Spend</h3>
+                <p className="chart-subtitle text-xs mb-4">Highest value procurement partners</p>
               </div>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data?.top_suppliers || []} layout="vertical" margin={{ left: 120, right: 30, top: 5, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={false} opacity={0.5} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={chartGrid} horizontal={false} opacity={0.5} />
                   <XAxis
                     type="number"
-                    tick={{ fill: '#64748b', fontSize: 10 }}
+                    tick={{ fill: chartAxisColor, fontSize: 10 }}
                     tickLine={false}
                     tickFormatter={v => `${(v / 1e6).toFixed(1)}M`}
                   />
                   <YAxis
                     type="category"
                     dataKey="supplier_name"
-                    tick={{ fill: '#cbd5e1', fontSize: 11 }}
+                    tick={{ fill: chartYAxisLabel, fontSize: 11 }}
                     tickLine={false}
                     width={115}
                   />
                   <Tooltip
                     contentStyle={{
-                      background: '#0f172a',
-                      border: '1px solid #334155',
+                      background: tooltipBg,
+                      border: `1px solid ${tooltipBorder}`,
                       borderRadius: '0.75rem',
-                      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.4)'
+                      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.15)'
                     }}
-                    labelStyle={{ color: '#94a3b8', fontSize: '11px', marginBottom: '4px' }}
+                    labelStyle={{ color: tooltipLabel, fontSize: '11px', marginBottom: '4px' }}
                     itemStyle={{ color: '#a78bfa', fontWeight: 600 }}
                     formatter={v => [fmtLKR(v), 'Spend']}
                   />
@@ -185,10 +200,10 @@ export default function SpendAnalysis() {
             <div className="card flex flex-col justify-between">
               <div className="flex items-start justify-between mb-2">
                 <div>
-                  <h3 className="text-white font-bold text-base tracking-tight mb-0.5">Spend by Category</h3>
-                  <p className="text-slate-400 text-xs">Distribution of purchasing budget</p>
+                  <h3 className="chart-title font-bold text-base tracking-tight mb-0.5">Spend by Category</h3>
+                  <p className="chart-subtitle text-xs">Distribution of purchasing budget</p>
                 </div>
-                <span className="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700">
+                <span className={`text-xs px-2.5 py-1 rounded-full border ${isDark ? 'bg-slate-800 text-slate-300 border-slate-700' : 'bg-slate-100 text-slate-600 border-slate-200'}`}>
                   {categoryData.length} Categories
                 </span>
               </div>
@@ -207,7 +222,7 @@ export default function SpendAnalysis() {
                         dataKey="value"
                         nameKey="name"
                         label={renderCustomLabel}
-                        labelLine={{ stroke: '#64748b', strokeWidth: 1 }}
+                        labelLine={{ stroke: chartAxisColor, strokeWidth: 1 }}
                         onMouseEnter={(_, index) => setActiveIndex(index)}
                         onMouseLeave={() => setActiveIndex(null)}
                       >
@@ -222,11 +237,11 @@ export default function SpendAnalysis() {
                       </Pie>
                       <Tooltip
                         contentStyle={{
-                          background: '#0f172a',
-                          border: '1px solid #334155',
+                          background: tooltipBg,
+                          border: `1px solid ${tooltipBorder}`,
                           borderRadius: '0.75rem',
-                          color: '#f8fafc',
-                          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.4)'
+                          color: isDark ? '#f8fafc' : '#0f172a',
+                          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.15)'
                         }}
                         formatter={(v, name) => {
                           const total = data?.total_spend || 1
@@ -235,10 +250,10 @@ export default function SpendAnalysis() {
                         }}
                       />
                       {/* Donut center KPI info */}
-                      <text x="50%" y="45%" textAnchor="middle" dominantBaseline="middle" fill="#94a3b8" fontSize={11} fontWeight={500}>
+                      <text x="50%" y="45%" textAnchor="middle" dominantBaseline="middle" fill={pieCenterLabel} fontSize={11} fontWeight={500}>
                         {activeCategory ? activeCategory.name : 'Total Spend'}
                       </text>
-                      <text x="50%" y="54%" textAnchor="middle" dominantBaseline="middle" fill="#f8fafc" fontSize={14} fontWeight={700}>
+                      <text x="50%" y="54%" textAnchor="middle" dominantBaseline="middle" fill={pieCenterValue} fontSize={14} fontWeight={700}>
                         {activeCategory ? fmtLKR(activeCategory.value) : fmtLKR(data?.total_spend || 0)}
                       </text>
                       {activeCategory ? (
@@ -246,7 +261,7 @@ export default function SpendAnalysis() {
                           {`${((activeCategory.value / (data?.total_spend || 1)) * 100).toFixed(1)}%`}
                         </text>
                       ) : (
-                        <text x="50%" y="62%" textAnchor="middle" dominantBaseline="middle" fill="#64748b" fontSize={10}>
+                        <text x="50%" y="62%" textAnchor="middle" dominantBaseline="middle" fill={pieCenterLabel} fontSize={10}>
                           Hover for details
                         </text>
                       )}

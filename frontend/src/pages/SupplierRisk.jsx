@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { Shield, RefreshCw, AlertTriangle, CheckCircle, Star, TrendingUp, ShieldAlert, Award } from 'lucide-react'
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts'
+import { useTheme } from '../context/ThemeContext'
 
 const riskColor = { low: 'text-emerald-400', medium: 'text-amber-400', high: 'text-rose-400' }
 const riskBg = { low: 'badge-low', medium: 'badge-medium', high: 'badge-high' }
@@ -14,11 +15,19 @@ const recColor = {
 }
 
 export default function SupplierRisk() {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+  const gridStroke = isDark ? '#334155' : '#e2e8f0'
+  const axisLabel = isDark ? '#94a3b8' : '#64748b'
+  const tooltipBg = isDark ? '#0f172a' : '#ffffff'
+  const tooltipBorder = isDark ? '#334155' : '#e2e8f0'
+
   const [risks, setRisks] = useState([])
   const [recs, setRecs] = useState([])
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState('risk')
   const [selected, setSelected] = useState(null)
+
 
   const load = () => {
     setLoading(true)
@@ -245,11 +254,19 @@ export default function SupplierRisk() {
                 <>
                   <ResponsiveContainer width="100%" height={220}>
                     <RadarChart data={radarData}>
-                      <PolarGrid stroke="#334155" opacity={0.6} />
-                      <PolarAngleAxis dataKey="metric" tick={{ fill: '#94a3b8', fontSize: 11 }} />
-                      <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: '#64748b', fontSize: 9 }} />
+                      <PolarGrid stroke={isDark ? '#334155' : '#e2e8f0'} opacity={0.6} />
+                      <PolarAngleAxis dataKey="metric" tick={{ fill: isDark ? '#94a3b8' : '#475569', fontSize: 11 }} />
+                      <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: isDark ? '#64748b' : '#94a3b8', fontSize: 9 }} />
                       <Radar dataKey="value" stroke="#38bdf8" fill="#38bdf8" fillOpacity={0.25} />
-                      <Tooltip contentStyle={{ background: '#0f172a', border: '1px solid #334155', borderRadius: '0.5rem' }} />
+                      <Tooltip
+                        contentStyle={{
+                          background: isDark ? '#0f172a' : '#ffffff',
+                          border: isDark ? '1px solid #334155' : '1px solid #e2e8f0',
+                          borderRadius: '0.5rem',
+                          color: isDark ? '#f8fafc' : '#0f172a',
+                          boxShadow: isDark ? '0 10px 15px -3px rgba(0, 0, 0, 0.4)' : '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+                        }}
+                      />
                     </RadarChart>
                   </ResponsiveContainer>
 
