@@ -1,6 +1,5 @@
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import ThemeToggle from './ThemeToggle'
 import {
   LayoutDashboard, Package, Truck, ShoppingCart, Brain,
   BarChart3, Menu, X, Shield, LogOut
@@ -47,8 +46,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
             </div>
           </div>
         )}
-        <div className="flex items-center gap-1.5 ml-auto">
-          {!collapsed && <ThemeToggle />}
+        <div className="flex items-center ml-auto">
           <button
             onClick={() => setCollapsed(!collapsed)}
             aria-label="Toggle sidebar"
@@ -92,7 +90,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
 
       {/* Bottom Profile & Logout */}
       <div className="p-3 border-t border-slate-700/80 space-y-2">
-        {!collapsed ? (
+        {!collapsed && (
           <div className="flex items-center gap-3 px-3 py-2.5 bg-slate-800/70 rounded-xl border border-slate-700/50">
             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center flex-shrink-0 shadow-sm">
               {initials}
@@ -101,10 +99,6 @@ export default function Sidebar({ collapsed, setCollapsed }) {
               <p className="text-white text-xs font-semibold truncate">{user?.full_name}</p>
               <p className="text-slate-400 text-[11px] capitalize truncate">{user?.role?.replace(/_/g, ' ')}</p>
             </div>
-          </div>
-        ) : (
-          <div className="flex justify-center mb-2">
-            <ThemeToggle />
           </div>
         )}
         <button
